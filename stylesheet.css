@@ -407,3 +407,21 @@ footer.site-footer {
   body { background: #fff; }
   figure.source-page img { box-shadow: none; }
 }
+
+@media (max-width: 600px) {
+  .page-wrap { padding: 0 12px 60px; }
+  .site-nav .nav-inner { padding: 0 12px; }
+  .site-nav .nav-title { display: block; margin: 0 0 4px; }
+
+  h1 { font-size: 1.5em; }
+  h2 { font-size: 1.25em; }
+
+  .doc-grid { grid-template-columns: 1fr; }
+
+  nav.toc ul { columns: 1; }
+
+  table { font-size: 0.85em; }
+  th, td { padding: 6px 8px; }
+
+  .glossary-index { gap: 4px; }
+}
