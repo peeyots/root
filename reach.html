@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root — Faction Setup by Reach</title>
+<style>
+  :root{
+    --bg:#2b2117;
+    --panel:#3a2d1e;
+    --panel2:#4a3a26;
+    --gold:#d9a441;
+    --cream:#f3e6cf;
+    --green:#6fae5b;
+    --red:#d3685a;
+    --line:#6b5436;
+    --accent:#c1572f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:radial-gradient(circle at 50% 0%,#3a2d1e 0%,#241a11 100%);
+    color:var(--cream);
+    min-height:100vh;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;}
+  .backlink{display:inline-block;margin-bottom:14px;color:var(--gold);text-decoration:none;font-size:.9rem;}
+  .backlink:hover{text-decoration:underline;}
+  h1{
+    text-align:center;
+    font-size:2.1rem;
+    margin:0 0 4px;
+    color:var(--gold);
+    letter-spacing:1px;
+    text-shadow:0 2px 4px #0008;
+  }
+  .sub{text-align:center;color:#bfae8f;margin:0 0 28px;font-size:.95rem;}
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:20px 22px;
+    margin-bottom:22px;
+    box-shadow:0 4px 16px #0006;
+  }
+  .panel h2{
+    margin:0 0 16px;
+    font-size:1.15rem;
+    color:var(--gold);
+    border-bottom:1px solid var(--line);
+    padding-bottom:8px;
+  }
+  .players{display:flex;gap:10px;flex-wrap:wrap;}
+  .pbtn{
+    flex:1;
+    min-width:60px;
+    padding:12px 0;
+    font-size:1.1rem;
+    font-weight:700;
+    background:var(--panel2);
+    color:var(--cream);
+    border:2px solid var(--line);
+    border-radius:8px;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .pbtn:hover{border-color:var(--gold);}
+  .pbtn.active{background:var(--accent);border-color:var(--gold);color:#fff;}
+  .slot{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .slot .idx{
+    width:30px;height:30px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--accent);border-radius:50%;
+    font-weight:700;font-size:.9rem;color:#fff;
+  }
+  select{
+    flex:1;
+    padding:10px 12px;
+    font-size:1rem;
+    background:var(--panel2);
+    color:var(--cream);
+    border:1px solid var(--line);
+    border-radius:8px;
+    cursor:pointer;
+  }
+  select:focus{outline:2px solid var(--gold);}
+  .reachtag{
+    width:54px;flex:none;text-align:center;
+    font-weight:700;font-size:1.05rem;
+    color:var(--gold);
+  }
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
+  .lucky{
+    flex:1;min-width:200px;
+    padding:14px;
+    font-size:1.05rem;font-weight:700;
+    background:linear-gradient(180deg,#e0b24c,#c1882f);
+    color:#3a2d1e;
+    border:none;border-radius:10px;cursor:pointer;
+    box-shadow:0 3px 0 #8a5e1f;
+    transition:.1s;
+  }
+  .lucky:hover{filter:brightness(1.07);}
+  .lucky:active{transform:translateY(2px);box-shadow:0 1px 0 #8a5e1f;}
+  .clear{
+    padding:14px 18px;font-size:1rem;
+    background:var(--panel2);color:var(--cream);
+    border:1px solid var(--line);border-radius:10px;cursor:pointer;
+  }
+  .clear:hover{border-color:var(--gold);}
+  .summary{display:flex;gap:14px;flex-wrap:wrap;text-align:center;}
+  .stat{
+    flex:1;min-width:120px;
+    background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:14px 8px;
+  }
+  .stat .lbl{font-size:.8rem;color:#bfae8f;margin-bottom:6px;}
+  .stat .val{font-size:1.8rem;font-weight:800;color:var(--gold);}
+  .verdict{
+    margin-top:16px;padding:14px;border-radius:10px;
+    text-align:center;font-weight:700;font-size:1.05rem;
+  }
+  .verdict.ok{background:#2f4a28;color:#bfe6ad;border:1px solid var(--green);}
+  .verdict.ng{background:#4a2824;color:#f0bcb4;border:1px solid var(--red);}
+  .verdict.none{background:var(--panel2);color:#bfae8f;border:1px solid var(--line);}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;}
+  th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;}
+  th{color:var(--gold);font-weight:600;}
+  td.num,th.num{text-align:right;width:80px;color:var(--gold);font-weight:700;}
+  .ref-grid{display:flex;gap:22px;flex-wrap:wrap;}
+  .ref-grid>div{flex:1;min-width:260px;}
+  details summary{cursor:pointer;color:var(--gold);font-weight:600;}
+  .note{font-size:.82rem;color:#bfae8f;margin-top:10px;line-height:1.5;}
+  .footer{text-align:center;color:#8a7a5e;font-size:.78rem;margin-top:30px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="backlink" href="index.html">← ドキュメント一覧へ戻る</a>
+  <h1>🌳 Root — Faction Setup</h1>
+  <p class="sub">Law of Root §5.2 REACH に基づく種族選択ツール</p>
+
+  <div class="panel">
+    <h2>1. Number of Players</h2>
+    <div class="players" id="players"></div>
+  </div>
+
+  <div class="panel">
+    <h2>2. Select Factions</h2>
+    <div id="slots"></div>
+    <div class="actions">
+      <button class="lucky" id="luckyBtn">🍀 I'm Feeling Lucky</button>
+      <button class="clear" id="clearBtn">Clear</button>
+    </div>
+    <p class="note">プレイ人数分の種族を選びます。<b>Vagabond は2人まで</b>選択可能（1人目=Reach 5 / 2人目=Reach 2）。それ以外の種族は排他（重複不可）です。</p>
+  </div>
+
+  <div class="panel">
+    <h2>3. Reach Total</h2>
+    <div class="summary">
+      <div class="stat"><div class="lbl">Total Reach</div><div class="val" id="totalVal">0</div></div>
+      <div class="stat"><div class="lbl">Viable Reach Sum</div><div class="val" id="targetVal">–</div></div>
+      <div class="stat"><div class="lbl">Difference</div><div class="val" id="diffVal">–</div></div>
+    </div>
+    <div class="verdict none" id="verdict">プレイ人数と種族を選んでください。</div>
+  </div>
+
+  <div class="panel">
+    <details>
+      <summary>📖 Reference Tables (Law of Root §5.2)</summary>
+      <div class="ref-grid" style="margin-top:16px;">
+        <div>
+          <h3 style="color:var(--gold);font-size:1rem;">Reach Values</h3>
+          <table id="refReach"></table>
+        </div>
+        <div>
+          <h3 style="color:var(--gold);font-size:1rem;">Viable Reach Sums</h3>
+          <table id="refViable"></table>
+          <p class="note">合計 Reach が、人数ごとの推奨値「以上」になる組み合わせが「面白いゲーム」とされます。</p>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <p class="footer">出典: Root_Base_Law_Oct_2025.pdf §5.2 REACH</p>
+</div>
+
+<script>
+// ===== Data from Law of Root §5.2 (Oct 2025) =====
+const FACTIONS = [
+  {name:"Marquise de Cat",       reach:10},
+  {name:"Lord of the Hundreds",  reach:9},
+  {name:"Keepers in Iron",       reach:8},
+  {name:"Underground Duchy",     reach:8},
+  {name:"Lilypad Diaspora",      reach:7},
+  {name:"Eyrie Dynasties",       reach:7},
+  {name:"Vagabond",              reach:5}, // 2人目は VAGABOND_SECOND
+  {name:"Riverfolk Company",     reach:5},
+  {name:"Knaves of the Deepwood",reach:4},
+  {name:"Twilight Council",      reach:4},
+  {name:"Woodland Alliance",     reach:3},
+  {name:"Corvid Conspiracy",     reach:3},
+  {name:"Lizard Cult",           reach:2},
+];
+const VAGABOND = "Vagabond";
+const VAGABOND_SECOND = 2;      // 2人目 Vagabond の Reach
+const VAGABOND_MAX = 2;         // Vagabond は最大2
+const VIABLE = {2:17, 3:18, 4:21, 5:25, 6:28};
+
+const reachOf = n => FACTIONS.find(f=>f.name===n).reach;
+
+let players = 0;
+let selections = []; // length === players, each "" or faction name
+
+// ===== Build player buttons =====
+const playersEl = document.getElementById("players");
+[2,3,4,5,6].forEach(n=>{
+  const b=document.createElement("button");
+  b.className="pbtn"; b.textContent=n; b.dataset.n=n;
+  b.onclick=()=>setPlayers(n);
+  playersEl.appendChild(b);
+});
+
+function setPlayers(n){
+  players=n;
+  selections=Array(n).fill("");
+  document.querySelectorAll(".pbtn").forEach(b=>b.classList.toggle("active",+b.dataset.n===n));
+  renderSlots();
+  recalc();
+}
+
+// ===== Slots =====
+const slotsEl=document.getElementById("slots");
+function renderSlots(){
+  slotsEl.innerHTML="";
+  for(let i=0;i<players;i++){
+    const row=document.createElement("div");
+    row.className="slot";
+
+    const idx=document.createElement("div");
+    idx.className="idx"; idx.textContent=i+1;
+
+    const sel=document.createElement("select");
+    sel.dataset.slot=i;
+    sel.onchange=()=>{ selections[i]=sel.value; refreshOptions(); recalc(); };
+
+    const tag=document.createElement("div");
+    tag.className="reachtag"; tag.dataset.tag=i; tag.textContent="–";
+
+    row.append(idx,sel,tag);
+    slotsEl.appendChild(row);
+  }
+  refreshOptions();
+}
+
+// 各スロットの option を、他スロットの選択状況に応じて出し分け
+function refreshOptions(){
+  document.querySelectorAll("#slots select").forEach(sel=>{
+    const i=+sel.dataset.slot;
+    const cur=selections[i];
+    sel.innerHTML="";
+    const blank=new Option("— select faction —","");
+    sel.appendChild(blank);
+    FACTIONS.forEach(f=>{
+      const opt=new Option(`${f.name} (${f.reach})`, f.name);
+      let used;
+      if(f.name===VAGABOND){
+        // 自分以外で使われている Vagabond の数が上限なら不可
+        const others = selections.filter((s,j)=>j!==i && s===VAGABOND).length;
+        used = others >= VAGABOND_MAX;
+      }else{
+        used = selections.some((s,j)=>j!==i && s===f.name);
+      }
+      if(used) opt.disabled=true;
+      sel.appendChild(opt);
+    });
+    sel.value=cur||"";
+  });
+}
+
+// ===== Reach calculation =====
+function computeReach(){
+  let total=0, vagSeen=0;
+  const per=[];
+  selections.forEach(name=>{
+    if(!name){ per.push(null); return; }
+    let r=reachOf(name);
+    if(name===VAGABOND){ vagSeen++; r = vagSeen===1?reachOf(VAGABOND):VAGABOND_SECOND; }
+    total+=r;
+    per.push(r);
+  });
+  return {total,per};
+}
+
+function recalc(){
+  const {total,per}=computeReach();
+  per.forEach((r,i)=>{
+    const tag=document.querySelector(`[data-tag="${i}"]`);
+    if(tag) tag.textContent = r==null?"–":r;
+  });
+  document.getElementById("totalVal").textContent=total;
+
+  const target = VIABLE[players];
+  document.getElementById("targetVal").textContent = target ?? "–";
+
+  const verdict=document.getElementById("verdict");
+  const diffEl=document.getElementById("diffVal");
+
+  const allChosen = players>0 && selections.every(s=>s!=="");
+  if(!players){ verdict.className="verdict none"; verdict.textContent="プレイ人数を選んでください。"; diffEl.textContent="–"; return; }
+
+  const diff = total - target;
+  diffEl.textContent = (diff>=0?"+":"") + diff;
+  diffEl.style.color = diff>=0 ? "var(--green)" : "var(--red)";
+
+  if(!allChosen){
+    verdict.className="verdict none";
+    verdict.textContent=`残り ${selections.filter(s=>s==="").length} 種族を選択してください（目標 ${target}+）。`;
+  }else if(diff>=0){
+    verdict.className="verdict ok";
+    verdict.textContent=`✅ Viable! 合計 ${total} ≥ ${target}（差分 +${diff}）— バランスの取れた組み合わせです。`;
+  }else{
+    verdict.className="verdict ng";
+    verdict.textContent=`⚠️ Reach 不足: 合計 ${total} < ${target}（あと ${-diff} 必要）。`;
+  }
+}
+
+// ===== I'm Feeling Lucky =====
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function feelingLucky(){
+  if(!players){ alert("先にプレイ人数を選んでください。"); return; }
+  const target=VIABLE[players];
+
+  // 選択候補プール: 各非Vagabondは1枚、Vagabondは VAGABOND_MAX 枚
+  const buildPool=()=>{
+    const pool=[];
+    FACTIONS.forEach(f=>{
+      const copies = f.name===VAGABOND ? VAGABOND_MAX : 1;
+      for(let k=0;k<copies;k++) pool.push(f.name);
+    });
+    return pool;
+  };
+
+  // Reach計算（名前配列から、Vagabond 2人目=2 を考慮）
+  const reachOfSet=(arr)=>{
+    let t=0,v=0;
+    arr.forEach(n=>{ if(n===VAGABOND){v++; t += v===1?reachOf(VAGABOND):VAGABOND_SECOND;} else t+=reachOf(n); });
+    return t;
+  };
+
+  let best=null;
+  for(let attempt=0; attempt<8000; attempt++){
+    const pick=shuffle(buildPool()).slice(0,players);
+    const t=reachOfSet(pick);
+    if(t>=target){ best=pick; break; }
+    if(!best || reachOfSet(best) < t) best=pick; // フォールバックで最良を保持
+  }
+
+  // Vagabond が複数なら 5 を先頭側に来るよう並べ替え（表示の一貫性）
+  best.sort((a,b)=> reachOf(b)-reachOf(a));
+  selections = best.slice(0,players);
+  renderSlots();
+  recalc();
+}
+
+document.getElementById("luckyBtn").onclick=feelingLucky;
+document.getElementById("clearBtn").onclick=()=>{ if(players){ selections=Array(players).fill(""); renderSlots(); recalc(); } };
+
+// ===== Reference tables =====
+(function(){
+  const rt=document.getElementById("refReach");
+  rt.innerHTML="<tr><th>Faction</th><th class='num'>Reach</th></tr>"+
+    FACTIONS.map(f=>`<tr><td>${f.name}${f.name===VAGABOND?" <small>(1st)</small>":""}</td><td class='num'>${f.reach}</td></tr>`).join("")+
+    `<tr><td>Vagabond <small>(2nd)</small></td><td class='num'>${VAGABOND_SECOND}</td></tr>`;
+  const vt=document.getElementById("refViable");
+  vt.innerHTML="<tr><th>Players</th><th class='num'>Total Reach</th></tr>"+
+    Object.entries(VIABLE).map(([p,r])=>`<tr><td>${p}</td><td class='num'>${r}+</td></tr>`).join("");
+})();
+
+// 初期表示
+setPlayers(4);
+</script>
+</body>
+</html>

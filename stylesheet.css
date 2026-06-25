@@ -77,6 +77,70 @@ body {
   font-size: 15px;
 }
 
+/* ---------- Dropdown nav (根の法典 / 入門) ---------- */
+.site-nav details.nav-dropdown {
+  position: relative;
+}
+
+.site-nav details.nav-dropdown > summary {
+  color: #f3e9d8;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.site-nav details.nav-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+.site-nav details.nav-dropdown > summary::after {
+  content: "▾";
+  font-size: 0.75em;
+}
+
+.site-nav details.nav-dropdown > summary:hover,
+.site-nav details.nav-dropdown[open] > summary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.site-nav details.nav-dropdown:has(a.current) > summary {
+  background: var(--color-accent-dark);
+  color: #fff;
+}
+
+.site-nav .nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  z-index: 200;
+}
+
+.site-nav .nav-dropdown-menu a {
+  color: var(--color-text);
+}
+
+.site-nav .nav-dropdown-menu a:hover,
+.site-nav .nav-dropdown-menu a.current {
+  background: var(--color-accent);
+  color: #fff;
+}
+
 /* ---------- Headings ---------- */
 h1 {
   color: var(--color-heading);
@@ -412,6 +476,13 @@ footer.site-footer {
   .page-wrap { padding: 0 12px 60px; }
   .site-nav .nav-inner { padding: 0 12px; }
   .site-nav .nav-title { display: block; margin: 0 0 4px; }
+  .site-nav details.nav-dropdown { width: 100%; }
+  .site-nav .nav-dropdown-menu {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+    margin-top: 4px;
+  }
 
   h1 { font-size: 1.5em; }
   h2 { font-size: 1.25em; }
