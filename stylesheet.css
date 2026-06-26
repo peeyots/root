@@ -474,14 +474,19 @@ footer.site-footer {
 
 @media (max-width: 600px) {
   .page-wrap { padding: 0 12px 60px; }
-  .site-nav .nav-inner { padding: 0 12px; }
-  .site-nav .nav-title { display: block; margin: 0 0 4px; }
-  .site-nav details.nav-dropdown { width: 100%; }
+  .site-nav .nav-inner { padding: 0 12px; gap: 4px 6px; }
+  /* タイトルだけ独立した1行にし、メニュー項目はその下に横一列で並べる */
+  .site-nav .nav-title { flex-basis: 100%; margin: 0 0 2px; font-size: 14px; }
+  /* 文字・余白を詰めて 根の法典／入門／用語集／準備ツール を1行に収める */
+  .site-nav a,
+  .site-nav details.nav-dropdown > summary { font-size: 13px; padding: 4px 6px; }
+  /* ドロップダウンを全幅にせず、横並びのまま配置する */
+  .site-nav details.nav-dropdown { width: auto; }
+  /* 開いたメニューは浮動ポップアップのままにして、ナビの高さを増やさない */
   .site-nav .nav-dropdown-menu {
-    position: static;
-    box-shadow: none;
-    width: 100%;
-    margin-top: 4px;
+    min-width: 160px;
+    width: max-content;
+    max-width: calc(100vw - 24px);
   }
 
   h1 { font-size: 1.5em; }
